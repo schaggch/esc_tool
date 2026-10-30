@@ -439,6 +439,9 @@ void Commands::processPacket(QByteArray data)
         break;
 
     case COMM_CUSTOM_HW_DATA:
+        if (vb.size()==9 && vb.startsWith("SPEDPIN1") && !(quint8(vb[8]) & 0xf0)) {
+            emit speedpedPinLevelsReceived(quint8(vb[8]));
+        }
         emit customHwDataReceived(vb);
         break;
 
@@ -1623,6 +1626,11 @@ void Commands::sendCustomHwData(QByteArray data)
     vb.vbAppendInt8(COMM_CUSTOM_HW_DATA);
     vb.append(data);
     emitData(vb);
+}
+
+void Commands::requestSpeedpedPinLevels()
+{
+    sendCustomHwData(QByteArray("SPEDPIN1",8));
 }
 
 void Commands::setChukData(chuck_data &data)

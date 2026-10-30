@@ -1,0 +1,276 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ConfigParams>
+  <Params>
+    <hw_name>
+      <type>0</type>
+      <longName>SPEEDPED</longName>
+      <transmittable>0</transmittable>
+    </hw_name>
+    <config_name>
+      <type>3</type>
+      <valString>speedped_bike_v1</valString>
+      <transmittable>0</transmittable>
+    </config_name>
+    <wheel_mm>
+      <type>2</type>
+      <vTx>6</vTx>
+      <longName>Radumfang</longName>
+      <description>Radumfang am Reifen messen.</description>
+      <transmittable>1</transmittable>
+      <valInt>2250</valInt>
+      <minInt>100</minInt>
+      <maxInt>5000</maxInt>
+      <stepInt>1</stepInt>
+      <suffix> mm</suffix>
+      <editorScale>1</editorScale>
+    </wheel_mm>
+    <wheel_pulses>
+      <type>2</type>
+      <vTx>6</vTx>
+      <longName>Signale pro Radumdrehung</longName>
+      <description>Fallende Flanken am Hall-C-Eingang. Active low.</description>
+      <transmittable>1</transmittable>
+      <valInt>1</valInt>
+      <minInt>1</minInt>
+      <maxInt>64</maxInt>
+      <stepInt>1</stepInt>
+      <suffix />
+      <editorScale>1</editorScale>
+    </wheel_pulses>
+    <pedal_kmh>
+      <type>2</type>
+      <vTx>6</vTx>
+      <longName>maxSpeed pedaling</longName>
+      <description>0 = keine Geschwindigkeitsbegrenzung. PAS-Freigabe bleibt erforderlich. Im Duty-Modus Reduktion ab 80% bis null am Limit.</description>
+      <transmittable>1</transmittable>
+      <valInt>0</valInt>
+      <minInt>0</minInt>
+      <maxInt>150</maxInt>
+      <stepInt>1</stepInt>
+      <suffix> km/h</suffix>
+      <editorScale>1</editorScale>
+    </pedal_kmh>
+    <ah_kmh>
+      <type>2</type>
+      <vTx>6</vTx>
+      <longName>maxSpeed AH</longName>
+      <description>0 = keine Geschwindigkeitsbegrenzung. Hall A und B muessen gehalten werden; Leistung vom Gasgriff. Im Duty-Modus Reduktion ab 80%.</description>
+      <transmittable>1</transmittable>
+      <valInt>0</valInt>
+      <minInt>0</minInt>
+      <maxInt>30</maxInt>
+      <stepInt>1</stepInt>
+      <suffix> km/h</suffix>
+      <editorScale>1</editorScale>
+    </ah_kmh>
+    <pas_timeout>
+      <type>2</type>
+      <vTx>6</vTx>
+      <longName>PAS Timeout</longName>
+      <description>Maximales Alter einer gueltigen Pedalperiode.</description>
+      <transmittable>1</transmittable>
+      <valInt>500</valInt>
+      <minInt>50</minInt>
+      <maxInt>5000</maxInt>
+      <stepInt>1</stepInt>
+      <suffix> ms</suffix>
+      <editorScale>1</editorScale>
+    </pas_timeout>
+    <pas_magnets>
+      <type>2</type>
+      <vTx>6</vTx>
+      <longName>Magnets per Round</longName>
+      <description>Magnete pro Kurbelumdrehung, fuer die Trittfrequenz.</description>
+      <transmittable>1</transmittable>
+      <valInt>5</valInt>
+      <minInt>1</minInt>
+      <maxInt>64</maxInt>
+      <stepInt>1</stepInt>
+      <suffix />
+      <editorScale>1</editorScale>
+    </pas_magnets>
+    <pas_start>
+      <type>2</type>
+      <vTx>6</vTx>
+      <longName>Min signals for start</longName>
+      <description>Anzahl vollstaendiger gueltiger Perioden nach der Synchronisationsflanke.</description>
+      <transmittable>1</transmittable>
+      <valInt>2</valInt>
+      <minInt>1</minInt>
+      <maxInt>32</maxInt>
+      <stepInt>1</stepInt>
+      <suffix />
+      <editorScale>1</editorScale>
+    </pas_start>
+    <pas_duty>
+      <type>4</type>
+      <vTx>0</vTx>
+      <longName>PAS Low-Anteil</longName>
+      <description>Zeitanteil auf GND. Genau 50% wird nie als vorwaerts gewertet.</description>
+      <transmittable>1</transmittable>
+      <valInt>1</valInt>
+      <minInt>0</minInt>
+      <maxInt>1</maxInt>
+      <stepInt>1</stepInt>
+      <suffix />
+      <editorScale>1</editorScale>
+      <enumNames>Low &lt; 50 %</enumNames>
+      <enumNames>Low &gt; 50 %</enumNames>
+    </pas_duty>
+    <no_wheel_seconds>
+      <type>2</type>
+      <vTx>6</vTx>
+      <longName>Timeout ohne Radimpulse</longName>
+      <description>Reserviert fuer Kompatibilitaet. Ohne Funktion in dieser Firmware.</description>
+      <transmittable>1</transmittable>
+      <valInt>100</valInt>
+      <minInt>0</minInt>
+      <maxInt>120</maxInt>
+      <stepInt>1</stepInt>
+      <suffix> s</suffix>
+      <editorScale>1</editorScale>
+    </no_wheel_seconds>
+    <no_wheel_watts>
+      <type>2</type>
+      <vTx>6</vTx>
+      <longName>Leistungsschwelle ohne Radsignal</longName>
+      <description>Reserviert fuer Kompatibilitaet. Ohne Funktion in dieser Firmware.</description>
+      <transmittable>1</transmittable>
+      <valInt>500</valInt>
+      <minInt>0</minInt>
+      <maxInt>100000</maxInt>
+      <stepInt>1</stepInt>
+      <suffix> W</suffix>
+      <editorScale>1</editorScale>
+    </no_wheel_watts>
+    <no_wheel_erpm>
+      <type>2</type>
+      <vTx>6</vTx>
+      <longName>eRPM-Grenze ohne Radsignal</longName>
+      <description>Reserviert fuer Kompatibilitaet. Ohne Funktion in dieser Firmware.</description>
+      <transmittable>1</transmittable>
+      <valInt>10000</valInt>
+      <minInt>0</minInt>
+      <maxInt>100000</maxInt>
+      <stepInt>1</stepInt>
+      <suffix> eRPM</suffix>
+      <editorScale>1</editorScale>
+    </no_wheel_erpm>
+    <sh_duty>
+      <type>2</type>
+      <vTx>6</vTx>
+      <longName>maxADC SH</longName>
+      <description>Maximaler normierter Gasgriffwert bei SH in allen ADC-Betriebsmodi. Begrenzt auf X Prozent, skaliert den Gasgriff nicht. 0 sperrt SH. Bremsanforderungen bleiben erhalten.</description>
+      <transmittable>1</transmittable>
+      <valInt>15</valInt>
+      <minInt>0</minInt>
+      <maxInt>95</maxInt>
+      <stepInt>1</stepInt>
+      <suffix> %</suffix>
+      <editorScale>1</editorScale>
+    </sh_duty>
+    <sound_start>
+      <type>2</type>
+      <vTx>6</vTx>
+      <longName>Startton</longName>
+      <description>0 = aus, 1 = kurzer Retro-Startton im Stillstand.</description>
+      <transmittable>1</transmittable>
+      <valInt>0</valInt>
+      <minInt>0</minInt>
+      <maxInt>1</maxInt>
+      <stepInt>1</stepInt>
+      <suffix />
+      <editorScale>1</editorScale>
+    </sound_start>
+    <sound_ride>
+      <type>2</type>
+      <vTx>6</vTx>
+      <longName>Fahrmelodie</longName>
+      <description>0 = aus, 1 = Retro-Melodie bei Fahrt und gueltigem PAS.</description>
+      <transmittable>1</transmittable>
+      <valInt>0</valInt>
+      <minInt>0</minInt>
+      <maxInt>1</maxInt>
+      <stepInt>1</stepInt>
+      <suffix />
+      <editorScale>1</editorScale>
+    </sound_ride>
+    <sound_volume>
+      <type>2</type>
+      <vTx>6</vTx>
+      <longName>Lautstaerke</longName>
+      <description>0 = stumm. Motorspezifische Spannungsgrenze noch zu validieren.</description>
+      <transmittable>1</transmittable>
+      <valInt>100</valInt>
+      <minInt>0</minInt>
+      <maxInt>100</maxInt>
+      <stepInt>1</stepInt>
+      <suffix> %</suffix>
+      <editorScale>1</editorScale>
+    </sound_volume>
+    <sound_tempo>
+      <type>2</type>
+      <vTx>6</vTx>
+      <longName>Tempo relativ zu PAS</longName>
+      <description>100% = eine Note pro Magnetperiode. 200% = doppelte Notenrate.</description>
+      <transmittable>1</transmittable>
+      <valInt>100</valInt>
+      <minInt>25</minInt>
+      <maxInt>400</maxInt>
+      <stepInt>1</stepInt>
+      <suffix> %</suffix>
+      <editorScale>1</editorScale>
+    </sound_tempo>
+  </Params>
+  <SerOrder>
+    <ser>wheel_mm</ser>
+    <ser>wheel_pulses</ser>
+    <ser>pedal_kmh</ser>
+    <ser>ah_kmh</ser>
+    <ser>pas_timeout</ser>
+    <ser>pas_magnets</ser>
+    <ser>pas_start</ser>
+    <ser>pas_duty</ser>
+    <ser>no_wheel_seconds</ser>
+    <ser>no_wheel_watts</ser>
+    <ser>no_wheel_erpm</ser>
+    <ser>sh_duty</ser>
+    <ser>sound_start</ser>
+    <ser>sound_ride</ser>
+    <ser>sound_volume</ser>
+    <ser>sound_tempo</ser>
+  </SerOrder>
+  <Grouping>
+    <group>
+      <groupName>General</groupName>
+      <subgroup>
+        <subgroupName>Speed</subgroupName>
+        <subgroupParams>
+          <param>wheel_mm</param>
+          <param>wheel_pulses</param>
+          <param>pedal_kmh</param>
+          <param>ah_kmh</param>
+          <param>sh_duty</param>
+        </subgroupParams>
+      </subgroup>
+      <subgroup>
+        <subgroupName>PAS</subgroupName>
+        <subgroupParams>
+          <param>pas_timeout</param>
+          <param>pas_magnets</param>
+          <param>pas_start</param>
+          <param>pas_duty</param>
+        </subgroupParams>
+      </subgroup>
+      <subgroup>
+        <subgroupName>Sound</subgroupName>
+        <subgroupParams>
+          <param>sound_start</param>
+          <param>sound_ride</param>
+          <param>sound_volume</param>
+          <param>sound_tempo</param>
+        </subgroupParams>
+      </subgroup>
+    </group>
+  </Grouping>
+</ConfigParams>

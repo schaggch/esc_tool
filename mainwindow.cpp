@@ -449,7 +449,9 @@ MainWindow::MainWindow(QWidget *parent) :
     });
 
     connect(mVesc, &VescInterface::customConfigLoadDone, [this]() {
-        ui->pageList->item(mPageNameIdList.value("app_custom_config_0"))->setHidden(mVesc->customConfigNum() < 1);
+        auto custom0 = mVesc->customConfig(0);
+        const bool bikeConfig = custom0 && custom0->getParamQString("config_name") == "speedped_bike_v1";
+        ui->pageList->item(mPageNameIdList.value("app_custom_config_0"))->setHidden(mVesc->customConfigNum() < 1 || bikeConfig);
         ui->pageList->item(mPageNameIdList.value("app_custom_config_1"))->setHidden(mVesc->customConfigNum() < 2);
         ui->pageList->item(mPageNameIdList.value("app_custom_config_2"))->setHidden(mVesc->customConfigNum() < 3);
 
@@ -1532,6 +1534,15 @@ void MainWindow::reloadPages()
     addPageItem(tr("General"),  theme + "icons/Horizontal Settings Mixer-96.png",
                 theme + "icons/appconf.png", false, true);
     mPageNameIdList.insert("app_general", ui->pageList->count() - 1);
+
+    auto bikePage = new PageCustomConfig(this);
+    bikePage->setVesc(mVesc);
+    bikePage->setConfNum(0);
+    bikePage->setBikeMode();
+    ui->pageWidget->addWidget(bikePage);
+    addPageItem(tr("SPEEDPED"), theme + "icons/Controller-96.png",
+                theme + "icons/appconf.png", false, true);
+    mPageNameIdList.insert("app_bike", ui->pageList->count() - 1);
 
     mPageAppPpm = new PageAppPpm(this);
     mPageAppPpm->setVesc(mVesc);

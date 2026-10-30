@@ -1,0 +1,33 @@
+SPEEDPED Fresh - Windows and Android Mobile
+
+Firmware: https://github.com/schaggch/bldc/tree/codex/vescfw-fresh-pas-sh-ah
+Tool: https://github.com/schaggch/esc_tool/tree/codex/jvesctool-fresh-pas-sh-ah
+
+SPEEDPED configuration: Speed / PAS / Sound, live GPIO indicators.
+Walking assist caps normalized ADC demand in all ADC modes (maxADC SH).
+SH release inhibits PAS only after at least 500 ms without AH.
+Missing-wheel substitute limiting is disabled, including legacy stored values.
+Legacy wire fields remain reserved for configuration compatibility.
+Keydisplay on UART1 reports live telemetry; incoming settings have no drive
+control effect. Bluetooth remains VESC protocol on UART2. No PAS assist levels.
+
+Wheel speed over Bluetooth: COMM_GET_VALUES_SETUP_SELECTIVE (51), mask bit 6.
+Request payload 33 00 00 00 40; response echoes command/mask followed by
+signed big-endian int32 speed in m/s * 1000. Convert to km/h with * 3.6 / 1000.
+Uses Hall C, configured wheel circumference and pulses/revolution, not eRPM.
+
+Windows: qmake vesc_tool.pro CONFIG+=release CONFIG+=build_original CONFIG+=exclude_fw
+then mingw32-make. Option --useMobileUi starts the mobile interface on Windows.
+Android: Qt 5.15.2 android-clang, ARM64, CONFIG+=build_mobile build_original exclude_fw.
+SDK/target/build-tools 35, min API 23, NDK 21.3, JDK 11, Gradle 7.5, AGP 7.4.2.
+Package: ch.jactec.jvesctool. APK is a debug-signed local test build.
+ECJ workaround is optional via JVESCTOOL_ECJ_JAR; signing key stays local.
+
+Validated offline: configuration signature and 65-byte serialization,
+firmware XML compatibility, portrait/landscape QML, hidden legacy limit fields,
+GPIO indicator decoding and disconnection behavior. APK signature and metadata
+verified. Physical phone/controller testing remains outstanding.
+
+Firmware release is ONLY for the modified Flipsky 75100V2 with one original
+R0005 (0.5 milliohm) per phase, three resistors total. Current limits remain
+unchanged; this is not a rating for the modified shunt assembly.

@@ -115,6 +115,7 @@ signals:
     void encoderParamReceived(ENCODER_DETECT_RES res);
     void customAppDataReceived(QByteArray data);
     void customHwDataReceived(QByteArray data);
+    void speedpedPinLevelsReceived(int mask);
     void focHallTableReceived(QVector<int> hall_table, int res);
     void nrfPairingRes(int res);
     void mcConfigCheckResult(QStringList paramsNotSet);
@@ -216,6 +217,7 @@ public slots:
     void sendCustomAppData(QByteArray data);
     void sendCustomAppData(unsigned char *data, unsigned int len);
     void sendCustomHwData(QByteArray data);
+    void requestSpeedpedPinLevels();
     void setChukData(chuck_data &data);
     void pairNrf(int ms);
     void gpdSetFsw(float fsw);

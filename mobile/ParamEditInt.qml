@@ -90,6 +90,7 @@ Item {
                 id: nameText
                 color: {color = Utility.getAppHexColor("lightText")}
                 text: paramName
+                wrapMode: Text.WordWrap
                 horizontalAlignment: Text.AlignHCenter
                 Layout.fillWidth: true
                 font.pointSize: 12

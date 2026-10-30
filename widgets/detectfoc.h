@@ -21,6 +21,7 @@
 #define DETECTFOC_H
 
 #include <QWidget>
+#include <QTimer>
 #include "vescinterface.h"
 
 namespace Ui {
@@ -62,6 +63,9 @@ private:
     bool mAllValuesOk;
     bool mLastOkValuesApplied;
     bool mRunning;
+    bool mRlRunning = false;
+    QTimer *mRlTimer;
+    void finishRlRequest();
     double mTempMotorLast;
     bool mEncoderValuesOk;
 

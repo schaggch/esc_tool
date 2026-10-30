@@ -21,6 +21,8 @@
 #define PAGECUSTOMCONFIG_H
 
 #include <QWidget>
+#include <QLabel>
+#include <QElapsedTimer>
 #include "vescinterface.h"
 
 namespace Ui {
@@ -38,9 +40,11 @@ public:
     VescInterface *vesc() const;
     void setVesc(VescInterface *vesc);
     void setConfNum(int num);
+    void setBikeMode();
 
 private slots:
     void customConfigLoadDone();
+    void updateBikePins(int mask);
 
     void on_readButton_clicked();
     void on_readDefaultButton_clicked();
@@ -52,6 +56,11 @@ private:
     Ui::PageCustomConfig *ui;
     VescInterface *mVesc;
     int mConfNum;
+    bool mBikeMode = false;
+    ConfigParams *mBikePreview = nullptr;
+    QLabel *mPinDots[4] = {};
+    QElapsedTimer mPinAge;
+    ConfigParams *activeConfig() const;
 
 };
 

@@ -49,6 +49,17 @@ DetectFoc::DetectFoc(QWidget *parent) :
     mRunning = false;
     mTempMotorLast = -100.0;
     mEncoderValuesOk = false;
+    mRlTimer = new QTimer(this);
+    mRlTimer->setSingleShot(true);
+    connect(mRlTimer, &QTimer::timeout, this, [this]() {
+        if (!mRlRunning) return;
+        finishRlRequest();
+        mRunning = false;
+        mVesc->emitStatusMessage(tr("R/L measurement: no response"), false);
+        QMessageBox::warning(this, tr("R/L measurement timeout"),
+            tr("No R/L response received within 180 seconds. The measurement may still be running. "
+               "Check the connection and the controller fault log before retrying."));
+    });
     updateColors();
 }
 
@@ -59,6 +70,7 @@ DetectFoc::~DetectFoc()
 
 void DetectFoc::on_rlButton_clicked()
 {
+    if (mRunning) return;
     if (mVesc) {
         if (!mVesc->isPortConnected()) {
             QMessageBox::critical(this,
@@ -75,8 +87,13 @@ void DetectFoc::on_rlButton_clicked()
                                      QMessageBox::Ok | QMessageBox::Cancel);
 
         if (reply == QMessageBox::Ok) {
-            mVesc->commands()->measureRL();
             mRunning = true;
+            mRlRunning = true;
+            ui->rlButton->setEnabled(false);
+            ui->lambdaButton->setEnabled(false);
+            mVesc->emitStatusMessage(tr("Measuring R/L - waiting for controller response..."), true);
+            mRlTimer->start(180000);
+            mVesc->commands()->measureRL();
         }
     }
 }
@@ -157,6 +174,14 @@ void DetectFoc::setVesc(VescInterface *vesc)
     }
 }
 
+void DetectFoc::finishRlRequest()
+{
+    mRlTimer->stop();
+    mRlRunning = false;
+    ui->rlButton->setEnabled(true);
+    ui->lambdaButton->setEnabled(true);
+}
+
 void DetectFoc::motorRLReceived(double r, double l, double ld_lq_diff)
 {
     if (!mRunning) {
@@ -164,6 +189,7 @@ void DetectFoc::motorRLReceived(double r, double l, double ld_lq_diff)
     }
 
     mRunning = false;
+    finishRlRequest();
 
     if (r < 1e-9 && l < 1e-9) {
         mVesc->emitStatusMessage(tr("Bad FOC Detection Result Received"), false);

@@ -1,26 +1,41 @@
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0'
+        classpath 'com.android.tools.build:gradle:7.4.2'
     }
 }
 
 repositories {
     google()
-    jcenter()
+    mavenCentral()
 }
 
 apply plugin: 'com.android.application'
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 }
 
 android {
+    namespace 'ch.jactec.jvesctool'
+    defaultConfig {
+        minSdkVersion 23
+        targetSdkVersion 35
+    }
+    signingConfigs {
+        debug {
+            storeFile file(System.getenv('GRADLE_USER_HOME') + '/jvesctool-debug.keystore')
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    aaptOptions { noCompress 'rcc' }
     /*******************************************************
      * The following variables:
      * - androidBuildToolsVersion,
@@ -53,5 +68,31 @@ android {
 
     lintOptions {
         abortOnError false
+    }
+}
+
+// ECJ avoids the JDK ZIP filesystem's failing path canonicalization in the
+// restricted Windows build environment. Other environments keep normal javac.
+tasks.withType(JavaCompile).configureEach {
+    options.incremental = false
+    def ecj = System.getenv('JVESCTOOL_ECJ_JAR')
+    if (ecj) {
+        actions.clear()
+        doLast {
+            destinationDirectory.get().asFile.mkdirs()
+            def quote = { value -> '"' + value.toString().replace('\\', '/') + '"' }
+            def arguments = ['-source', '1.8', '-target', '1.8', '-proc:none',
+                '-encoding', 'UTF-8', '-d', quote(destinationDirectory.get().asFile),
+                '-classpath', quote(classpath.asPath),
+                '-bootclasspath', quote(android.bootClasspath.join(File.pathSeparator))]
+            arguments.addAll(source.files.collect { quote(it.absolutePath) })
+            def responseFile = new File(temporaryDir, 'ecj-arguments.txt')
+            responseFile.parentFile.mkdirs()
+            responseFile.setText(arguments.join('\n'), 'UTF-8')
+            project.exec {
+                commandLine new File(System.getenv('JAVA_HOME'), 'bin/java.exe'),
+                    '-jar', ecj, '@' + responseFile.absolutePath
+            }
+        }
     }
 }

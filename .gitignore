@@ -53,3 +53,8 @@ res/firmwares/*/
 
 # Nix output
 /result
+
+# Generated Android build files and local signing material
+/android/AndroidManifest.xml
+/android/.gradle/
+*.keystore

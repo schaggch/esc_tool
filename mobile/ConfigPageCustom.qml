@@ -32,6 +32,9 @@ Item {
     property Commands mCommands: VescIf.commands()
     property bool isHorizontal: width > height
     property int confInd: 0
+    property bool isSpeedped: false
+    property bool connected: VescIf.isPortConnected()
+    property bool pageActive: true
 
     ParamEditors {
         id: editors
@@ -42,6 +45,9 @@ Item {
     }
 
     function reloadConfig() {
+        connected = VescIf.isPortConnected()
+        isSpeedped = connected && VescIf.customConfig(confInd) !== null &&
+                VescIf.customConfig(confInd).getParamQString("config_name") === "speedped_bike_v1"
         if (VescIf.customConfig(confInd) === null) {
             return
         }
@@ -52,7 +58,7 @@ Item {
 
     function addSeparator(text) {
         var e = editors.createSeparator(scrollCol, text)
-        e.Layout.columnSpan = isHorizontal ? 2 : 1
+        e.Layout.columnSpan = scrollCol.columns
     }
 
     function destroyEditors() {
@@ -63,8 +69,10 @@ Item {
 
     function createEditorCustom(param) {
         var e = editors.createEditorCustom(scrollCol, param, confInd)
-        e.Layout.preferredWidth = 500
-        e.Layout.fillsWidth = true
+        if (e === null) return
+        e.Layout.minimumWidth = 0
+        e.Layout.preferredWidth = 1
+        e.Layout.fillWidth = true
     }
 
     function updateEditors() {
@@ -94,8 +102,16 @@ Item {
         anchors.fill: parent
         spacing: 0
 
+        SpeedpedPins {
+            Layout.fillWidth: true
+            visible: appPageItem.isSpeedped
+            active: visible && appPageItem.visible && appPageItem.connected && appPageItem.pageActive
+            commands: mCommands
+        }
+
         ComboBox {
             id: tabBox
+            objectName: "customConfigSection"
             Layout.fillWidth: true
 
             onCurrentTextChanged: {
@@ -105,21 +121,24 @@ Item {
 
         ScrollView {
             id: scroll
+            objectName: "customConfigScroll"
             Layout.fillWidth: true
             Layout.fillHeight: true
             contentWidth: column.width
-            contentHeight: scrollCol.preferredHeight
+            contentHeight: scrollCol.implicitHeight
             clip: true
 
             GridLayout {
                 id: scrollCol
                 width: column.width
-                columns: isHorizontal ? 2 : 1
+                columns: isHorizontal && width >= 600 ? 2 : 1
+                enabled: appPageItem.connected
             }
         }
 
         RowLayout {
             Layout.fillWidth: true
+            enabled: appPageItem.connected
             Button {
                 Layout.preferredWidth: 100
                 Layout.fillWidth: true
@@ -253,7 +272,11 @@ Item {
         target: VescIf
 
         function onCustomConfigLoadDone() {
-            updateEditors()
+            reloadConfig()
+        }
+        function onPortConnectedChanged() {
+            appPageItem.connected = VescIf.isPortConnected()
+            if (!appPageItem.connected) appPageItem.isSpeedped = false
         }
     }
 }

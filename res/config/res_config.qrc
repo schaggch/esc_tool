@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/res/config/">
+        <file>bike.xml</file>
     	<file>fw.xml</file>
         <file>3.63/info.xml</file>
         <file>3.63/parameters_appconf.xml</file>

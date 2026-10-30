@@ -647,6 +647,7 @@ ApplicationWindow {
             anchors.fill: parent
             asynchronous: true
             sourceComponent: ConfigPageCustom {
+                pageActive: mainSwipeView.currentItem === confCustomPage
                 anchors.fill: parent
                 anchors.leftMargin: 10
                 anchors.rightMargin: 10

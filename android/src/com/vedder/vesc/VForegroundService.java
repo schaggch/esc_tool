@@ -29,7 +29,7 @@ import android.app.NotificationManager;
 import android.os.Build;
 import android.content.pm.ServiceInfo;
 
-import vedder.vesctool.R;
+import ch.jactec.jvesctool.R;
 
 public class VForegroundService extends Service {
     public static final String ACTION_START_FOREGROUND_SERVICE = "ACTION_START_FOREGROUND_SERVICE";
